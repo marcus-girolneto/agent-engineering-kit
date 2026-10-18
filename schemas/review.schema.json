@@ -1,0 +1,44 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Code review",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["summary", "findings", "checks", "limitations"],
+  "properties": {
+    "summary": {"type": "string", "minLength": 1},
+    "findings": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["severity", "file", "line", "title", "impact", "evidence", "suggestion"],
+        "properties": {
+          "severity": {"enum": ["critical", "high", "medium", "low"]},
+          "file": {"type": "string", "minLength": 1},
+          "line": {"type": "integer", "minimum": 1},
+          "title": {"type": "string", "minLength": 1},
+          "impact": {"type": "string", "minLength": 1},
+          "evidence": {"type": "string", "minLength": 1},
+          "suggestion": {"type": "string", "minLength": 1}
+        }
+      }
+    },
+    "checks": {"$ref": "#/$defs/checks"},
+    "limitations": {"type": "array", "items": {"type": "string", "minLength": 1}}
+  },
+  "$defs": {
+    "checks": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["command", "status", "evidence"],
+        "properties": {
+          "command": {"type": "string", "minLength": 1},
+          "status": {"enum": ["passed", "failed", "not_run"]},
+          "evidence": {"type": "string", "minLength": 1}
+        }
+      }
+    }
+  }
+}

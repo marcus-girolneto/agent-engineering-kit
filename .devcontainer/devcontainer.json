@@ -1,0 +1,20 @@
+{
+  "name": "Agent Engineering Kit",
+  "build": {"dockerfile": "Dockerfile"},
+  "remoteUser": "dev",
+  "workspaceMount": "source=${localWorkspaceFolder},target=/workspaces/kit,type=bind",
+  "workspaceFolder": "/workspaces/kit",
+  "mounts": [
+    "source=${devcontainerId}-venv,target=/workspaces/kit/.venv,type=volume",
+    "source=${devcontainerId}-uv-cache,target=/home/dev/.cache/uv,type=volume"
+  ],
+  "runArgs": ["--cap-drop=ALL", "--security-opt=no-new-privileges"],
+  "postCreateCommand": "./scripts/setup.sh",
+  "forwardPorts": [],
+  "customizations": {
+    "vscode": {
+      "extensions": ["ms-python.python", "charliermarsh.ruff"],
+      "settings": {"python.defaultInterpreterPath": "/workspaces/kit/.venv/bin/python"}
+    }
+  }
+}

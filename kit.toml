@@ -1,0 +1,39 @@
+[project]
+name = "agent-engineering-kit"
+python = "3.12"
+uv = "0.13.1"
+
+[checks]
+tasks = ["lint", "format-check", "types", "test", "static-security", "docs"]
+
+[tasks.lint]
+description = "Find Python lint errors"
+command = ["uv", "run", "--locked", "ruff", "check", "."]
+
+[tasks.format-check]
+description = "Check formatting without editing files"
+command = ["uv", "run", "--locked", "ruff", "format", "--check", "."]
+
+[tasks.format]
+description = "Format Python files"
+command = ["uv", "run", "--locked", "ruff", "format", "."]
+
+[tasks.types]
+description = "Check application and kit types"
+command = ["uv", "run", "--locked", "mypy"]
+
+[tasks.test]
+description = "Run behavior tests with branch coverage"
+command = ["uv", "run", "--locked", "pytest", "--cov", "--cov-report=term-missing", "--cov-report=xml:.artifacts/coverage.xml", "--junitxml=.artifacts/tests.xml", "-q"]
+
+[tasks.static-security]
+description = "Run Bandit over executable application code"
+command = ["uv", "run", "--locked", "bandit", "-q", "-r", "src", "examples/python-api/src", "-c", "pyproject.toml"]
+
+[tasks.docs]
+description = "Check local Markdown links and instruction-file size"
+command = ["uv", "run", "--locked", "kit", "docs"]
+
+[tasks.serve]
+description = "Run the example API on loopback only"
+command = ["uv", "run", "--locked", "--package", "task-api", "uvicorn", "task_api.app:create_app", "--factory", "--host", "127.0.0.1", "--port", "8000"]

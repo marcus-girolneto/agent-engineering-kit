@@ -1,0 +1,13 @@
+[build-system]
+requires = ["hatchling>=1.27,<2"]
+build-backend = "hatchling.build"
+
+[project]
+name = "task-api"
+version = "0.1.0"
+description = "A local task API used to exercise the engineering kit."
+requires-python = ">=3.12,<3.15"
+dependencies = ["fastapi>=0.143,<1", "uvicorn>=0.35,<1"]
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/task_api"]

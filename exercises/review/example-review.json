@@ -1,0 +1,27 @@
+{
+  "summary": "The fixture permits cross-account reads and updates under the exercise's stated assumptions.",
+  "findings": [
+    {
+      "severity": "high",
+      "file": "exercises/review/fixtures/unsafe_store.py",
+      "line": 3,
+      "title": "Caller-controlled owner changes the SQL predicate",
+      "impact": "A caller can read task rows belonging to other accounts.",
+      "evidence": "The owner is interpolated into SQL. The payload ' OR 1=1 -- makes the WHERE condition true for every row.",
+      "suggestion": "Bind owner as a SQL parameter."
+    },
+    {
+      "severity": "high",
+      "file": "exercises/review/fixtures/unsafe_store.py",
+      "line": 8,
+      "title": "Completion ignores the authenticated actor",
+      "impact": "A caller who knows another task ID can change its status.",
+      "evidence": "The UPDATE predicate contains only id; the actor parameter is unused.",
+      "suggestion": "Constrain the update by both task ID and authenticated owner."
+    }
+  ],
+  "checks": [
+    {"command": "uv run --locked pytest tests/test_exercises.py -q", "status": "not_run", "evidence": "This is a sample artifact. Run the reproductions and replace this entry with the observed result."}
+  ],
+  "limitations": ["The fixture is deliberately vulnerable and does not represent a deployed service."]
+}
